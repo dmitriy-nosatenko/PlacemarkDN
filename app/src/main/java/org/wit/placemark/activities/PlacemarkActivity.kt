@@ -1,5 +1,7 @@
 package org.wit.placemark.activities
 
+import android.R.id.edit
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -16,6 +18,7 @@ class PlacemarkActivity : AppCompatActivity() {
     
     private lateinit var binding: ActivityPlacemarkBinding
     var placemark = PlacemarkModel()
+
     var edit = false
     lateinit var app: MainApp
 
@@ -24,7 +27,6 @@ class PlacemarkActivity : AppCompatActivity() {
 
         binding = ActivityPlacemarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        edit = intent.hasExtra("placemark_edit")
 
         app = application as MainApp
 
@@ -32,9 +34,15 @@ class PlacemarkActivity : AppCompatActivity() {
 
         if (intent.hasExtra("placemark_edit"))
         {
+            edit = true
             placemark = intent.extras?.getParcelable("placemark_edit")!!
             binding.placemarkTitle.setText(placemark.title)
             binding.description.setText(placemark.description)
+            binding.btnAdd.setText(R.string.menu_savePlacemark)
+        }
+        else {
+            edit = false
+            binding.btnAdd.setText(R.string.menu_addPlacemark)
         }
 
         binding.btnAdd.setOnClickListener {
@@ -70,6 +78,7 @@ class PlacemarkActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
             when (item.itemId) {
 
                 R.id.item_add -> {
